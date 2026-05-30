@@ -1,15 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <!-- Background -->
-  <rect width="512" height="512" rx="96" fill="#1a1208"/>
-  <!-- Martini glass body (trapezoid/triangle shape) -->
-  <polygon points="256,140 390,290 122,290" fill="none" stroke="#c8922a" stroke-width="18" stroke-linejoin="round"/>
-  <!-- Glass stem -->
-  <line x1="256" y1="290" x2="256" y2="370" stroke="#c8922a" stroke-width="18" stroke-linecap="round"/>
-  <!-- Glass base -->
-  <line x1="206" y1="370" x2="306" y2="370" stroke="#c8922a" stroke-width="18" stroke-linecap="round"/>
-  <!-- Liquid fill inside glass -->
-  <polygon points="256,165 370,278 142,278" fill="#c8922a" opacity="0.25"/>
-  <!-- Olive garnish -->
-  <circle cx="330" cy="200" r="16" fill="#4a7c59" stroke="#c8922a" stroke-width="4"/>
-  <line x1="256" y1="140" x2="330" y2="200" stroke="#c8922a" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/>
+  <!-- Dark warm background -->
+  <rect width="512" height="512" rx="80" fill="#1a1208"/>
+
+  <!-- Liquid fill — lower third of bowl -->
+  <polygon points="256,318 162,202 350,202" fill="#c8922a" opacity="0.45"/>
+
+  <!-- Glass bowl: open V shape -->
+  <polyline points="70,88 256,318 442,88"
+    fill="none" stroke="#c8922a" stroke-width="28"
+    stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Rim line across the top -->
+  <line x1="70" y1="88" x2="442" y2="88"
+    stroke="#c8922a" stroke-width="28" stroke-linecap="round"/>
+
+  <!-- Stem -->
+  <line x1="256" y1="318" x2="256" y2="408"
+    stroke="#c8922a" stroke-width="28" stroke-linecap="round"/>
+
+  <!-- Base -->
+  <line x1="172" y1="408" x2="340" y2="408"
+    stroke="#c8922a" stroke-width="28" stroke-linecap="round"/>
+
+  <!-- Olive on cocktail pick -->
+  <line x1="300" y1="88" x2="350" y2="156"
+    stroke="#c8922a" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="350" cy="162" r="22" fill="#3d6e4a"/>
+  <circle cx="350" cy="162" r="9" fill="#c8922a"/>
 </svg>
