@@ -4,6 +4,7 @@ import type { Ingredient } from '../types';
 import { loadIngredients, saveIngredients } from '../store/pantry-store';
 import './ingredient-form';
 import './ingredient-list';
+import './cocktail-ai';
 
 @customElement('pantry-app')
 export class PantryApp extends LitElement {
@@ -139,6 +140,10 @@ export class PantryApp extends LitElement {
 
         <div class="card">
           <ingredient-list .ingredients=${this.ingredients}></ingredient-list>
+        </div>
+
+        <div class="card">
+          <cocktail-ai .ingredients=${this.ingredients}></cocktail-ai>
         </div>
       </div>
     `;
