@@ -8,7 +8,7 @@ export class IngredientList extends LitElement {
   @property({ type: Array }) ingredients: Ingredient[] = [];
 
   @state() private query = '';
-  @state() private sort: SortMode = 'newest';
+  @state() private sort: SortMode = 'alpha-asc';
   @state() private stockFilter: StockFilter = 'all';
 
   static styles = css`

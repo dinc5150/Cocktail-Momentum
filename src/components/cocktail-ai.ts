@@ -307,10 +307,11 @@ export class CocktailAi extends LitElement {
     const ingredientList = inStock.map(i => i.name).join(', ');
     const systemContent =
       `You are an expert cocktail mixologist. The user's home bar has these ingredients in stock: ${ingredientList}. ` +
-      `Basic pantry items like ice, water, sugar, salt, and soda water are also available. ` +
+      //`Basic pantry items like ice, water, sugar, salt, and soda water are also available. ` +
+      'Only suggest cocktails that can be made with the available ingredients. ' +
       `Suggest 3 to 5 cocktails they can make. For each cocktail provide: the cocktail name as a heading, ` +
-      `a one-sentence description, ingredients with measurements, and numbered step-by-step instructions. ` +
-      `Use plain text only, no markdown symbols like asterisks or hashes.`;
+      `a one-sentence description, ingredients with measurements, and numbered step-by-step instructions. `;// +
+      //`Use plain text or emoji's only, no markdown symbols like asterisks or hashes.`;
 
     const userQuery = this.query.trim()
       ? `I want something ${this.query.trim()}. What cocktails can I make?`
