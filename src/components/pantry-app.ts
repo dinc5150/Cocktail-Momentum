@@ -1,5 +1,10 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
+
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  prompt(): Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
 import type { Ingredient } from '../types';
 import { loadIngredients, saveIngredients } from '../store/pantry-store';
 import './ingredient-form';
@@ -9,6 +14,7 @@ import './cocktail-ai';
 @customElement('pantry-app')
 export class PantryApp extends LitElement {
   @state() private ingredients: Ingredient[] = [];
+  @state() private _installPrompt: BeforeInstallPromptEvent | null = null;
 
   static styles = css`
     :host {
@@ -108,6 +114,29 @@ export class PantryApp extends LitElement {
     .btn-example:hover {
       color: var(--accent-light);
     }
+
+    .btn-install {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      padding: 7px 18px;
+      background: none;
+      border: 1px solid var(--accent);
+      border-radius: 20px;
+      color: var(--accent-light);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .btn-install:hover {
+      background: var(--accent-glow);
+    }
   `;
 
   private static readonly EXAMPLE_ITEMS: string[] = [
@@ -128,9 +157,26 @@ export class PantryApp extends LitElement {
     'Maraschino Cherries', 'Olives', 'Mint', 'Ice', 'Salt', 'Sugar'
   ];
 
+  private _boundBeforeInstall = (e: Event) => {
+    e.preventDefault();
+    this._installPrompt = e as BeforeInstallPromptEvent;
+  };
+
+  private _boundAppInstalled = () => {
+    this._installPrompt = null;
+  };
+
   override connectedCallback(): void {
     super.connectedCallback();
     this.ingredients = loadIngredients();
+    window.addEventListener('beforeinstallprompt', this._boundBeforeInstall);
+    window.addEventListener('appinstalled', this._boundAppInstalled);
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    window.removeEventListener('beforeinstallprompt', this._boundBeforeInstall);
+    window.removeEventListener('appinstalled', this._boundAppInstalled);
   }
 
   private _handleAdd(e: Event): void {
@@ -157,6 +203,12 @@ export class PantryApp extends LitElement {
     const { id } = (e as CustomEvent<{ id: string }>).detail;
     this.ingredients = this.ingredients.filter(i => i.id !== id);
     saveIngredients(this.ingredients);
+  }
+
+  private async _installPwa(): Promise<void> {
+    if (!this._installPrompt) return;
+    const { outcome } = await this._installPrompt.prompt();
+    if (outcome === 'accepted') this._installPrompt = null;
   }
 
   private _addExampleItems(): void {
@@ -188,6 +240,11 @@ export class PantryApp extends LitElement {
           <h1 class="app-title">Cocktail Pantry</h1>
           <div class="divider"></div>
           <p class="app-subtitle">Your home bar inventory</p>
+          ${this._installPrompt ? html`
+            <button class="btn-install" @click=${this._installPwa}>
+              ⊕ Install App
+            </button>
+          ` : ''}
         </header>
 
         <div class="card">
