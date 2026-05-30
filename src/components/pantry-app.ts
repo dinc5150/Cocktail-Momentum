@@ -86,7 +86,47 @@ export class PantryApp extends LitElement {
       color: var(--text-secondary);
       margin-bottom: 14px;
     }
+
+    .example-bar-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    .btn-example {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.78rem;
+      letter-spacing: 0.03em;
+      padding: 4px 0;
+      transition: color 0.15s;
+    }
+
+    .btn-example:hover {
+      color: var(--accent-light);
+    }
   `;
+
+  private static readonly EXAMPLE_ITEMS: string[] = [
+    // Base spirits
+    'Vodka', 'Gin', 'White Rum', 'Dark Rum', 'Tequila', 'Bourbon',
+    'Scotch Whisky', 'Brandy',
+    // Liqueurs
+    'Triple Sec', 'Amaretto', 'Kahlúa', 'Campari', 'Aperol',
+    'Peach Schnapps', 'Blue Curaçao',
+    // Mixers
+    'Club Soda', 'Tonic Water', 'Ginger Beer', 'Ginger Ale', 'Cola',
+    'Orange Juice', 'Cranberry Juice', 'Pineapple Juice', 'Grapefruit Juice',
+    // Citrus & syrups
+    'Fresh Lemon Juice', 'Fresh Lime Juice', 'Simple Syrup', 'Grenadine', 'Honey',
+    // Bitters
+    'Angostura Bitters', 'Orange Bitters',
+    // Garnishes & extras
+    'Maraschino Cherries', 'Olives', 'Mint', 'Ice', 'Salt', 'Sugar'
+  ];
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -119,6 +159,23 @@ export class PantryApp extends LitElement {
     saveIngredients(this.ingredients);
   }
 
+  private _addExampleItems(): void {
+    const existing = new Set(
+      this.ingredients.map(i => i.name.toLowerCase())
+    );
+    const toAdd = PantryApp.EXAMPLE_ITEMS
+      .filter(name => !existing.has(name.toLowerCase()))
+      .map(name => ({
+        id: crypto.randomUUID(),
+        name,
+        addedAt: Date.now(),
+        inStock: true,
+      } satisfies Ingredient));
+    if (toAdd.length === 0) return;
+    this.ingredients = [...toAdd, ...this.ingredients];
+    saveIngredients(this.ingredients);
+  }
+
   override render() {
     return html`
       <div
@@ -136,6 +193,11 @@ export class PantryApp extends LitElement {
         <div class="card">
           <p class="card-label">Add Ingredient</p>
           <ingredient-form></ingredient-form>
+          <div class="example-bar-row">
+            <button class="btn-example" @click=${this._addExampleItems}>
+              + Add example bar items
+            </button>
+          </div>
         </div>
 
         <div class="card">
