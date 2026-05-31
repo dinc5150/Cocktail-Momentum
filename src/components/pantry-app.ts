@@ -142,19 +142,22 @@ export class PantryApp extends LitElement {
   private static readonly EXAMPLE_ITEMS: string[] = [
     // Base spirits
     'Vodka', 'Gin', 'White Rum', 'Dark Rum', 'Tequila', 'Bourbon',
-    'Scotch Whisky', 'Brandy',
+    'Scotch Whisky', 'Brandy', 'Cognac', 'Dry Vermouth', 'Sweet Vermouth',
+    // Wines
+    'Red Wine', 'White Wine', 'Rosé Wine', 'Champagne', 'Prosecco', 'Port Wine', 'Sherry',
     // Liqueurs
     'Triple Sec', 'Amaretto', 'Kahlúa', 'Campari', 'Aperol',
-    'Peach Schnapps', 'Blue Curaçao',
+    'Peach Schnapps', 'Blue Curaçao', 'Melon Liqueur', 'Coconut Rum', 'Creme de Menthe', 'Apperol', 
+    'Vermouth',
     // Mixers
     'Club Soda', 'Tonic Water', 'Ginger Beer', 'Ginger Ale', 'Cola',
     'Orange Juice', 'Cranberry Juice', 'Pineapple Juice', 'Grapefruit Juice',
     // Citrus & syrups
-    'Fresh Lemon Juice', 'Fresh Lime Juice', 'Simple Syrup', 'Grenadine', 'Honey',
+    'Lemon Juice', 'Lime Juice', 'Simple Syrup', 'Grenadine', 'Honey',
     // Bitters
     'Angostura Bitters', 'Orange Bitters',
     // Garnishes & extras
-    'Maraschino Cherries', 'Olives', 'Mint', 'Ice', 'Salt', 'Sugar'
+    'Maraschino Cherries', 'Olives', 'Mint', 'Ice', 'Salt', 'Sugar', 'Ice'
   ];
 
   private _boundBeforeInstall = (e: Event) => {
