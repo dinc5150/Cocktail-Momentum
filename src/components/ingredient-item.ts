@@ -30,9 +30,9 @@ export class IngredientItem extends LitElement {
       background: var(--bg-hover, #2a2a2a);
     }
 
-    .item.out-of-stock {
+    /* .item.out-of-stock {
       opacity: 0.55;
-    }
+    } */
 
     .stock-pill {
       flex-shrink: 0;
