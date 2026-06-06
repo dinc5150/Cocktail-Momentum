@@ -306,12 +306,15 @@ export class CocktailAi extends LitElement {
 
     const ingredientList = inStock.map(i => i.name).join(', ');
     const systemContent =
-      `You are an expert cocktail mixologist. The user's home bar has these ingredients in stock: ${ingredientList}. ` +
-      //`Basic pantry items like ice, water, sugar, salt, and soda water are also available. ` +
-      'Only suggest cocktails that can be made with the available ingredients. ' +
-      `Suggest 3 to 5 cocktails they can make. For each cocktail provide: the cocktail name as a heading, ` +
-      `a one-sentence description, ingredients with measurements, and numbered step-by-step instructions. `;// +
-      //`Use plain text or emoji's only, no markdown symbols like asterisks or hashes.`;
+      `You are an expert cocktail mixologist. ` +
+      `The user's pantry contains ONLY these ingredients: ${ingredientList}. ` +
+      `STRICT RULES you must follow: ` +
+      `(1) Only suggest cocktails that can be made using EXCLUSIVELY ingredients from the list above. ` +
+      `(2) Do NOT introduce any ingredient that does not appear in the list — no bitters, no vermouth, no syrups, no juices, no garnishes, no ice, no water, no additional spirits or liqueurs unless they are explicitly listed. ` +
+      `(3) When writing each cocktail's ingredient list, only include items from the provided pantry list. ` +
+      `(4) If a classic recipe would require an unlisted ingredient, skip that cocktail entirely. ` +
+      `Suggest 3 to 5 cocktails. For each cocktail provide: the cocktail name as a heading, ` +
+      `a one-sentence description, the ingredients with measurements (only from the pantry list), and numbered step-by-step instructions.`;
 
     const userQuery = this.query.trim()
       ? `I want something ${this.query.trim()}. What cocktails can I make?`
