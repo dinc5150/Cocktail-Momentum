@@ -147,17 +147,17 @@ export class PantryApp extends LitElement {
     'Red Wine', 'White Wine', 'Rosé Wine', 'Champagne', 'Prosecco', 'Port Wine', 'Sherry',
     // Liqueurs
     'Triple Sec', 'Amaretto', 'Kahlúa', 'Campari', 'Aperol',
-    'Peach Schnapps', 'Blue Curaçao', 'Melon Liqueur', 'Coconut Rum', 'Creme de Menthe', 'Apperol', 
+    'Peach Schnapps', 'Blue Curaçao', 'Melon Liqueur', 'Coconut Rum', 'Creme de Menthe', 'Aperol', 
     'Vermouth',
     // Mixers
     'Club Soda', 'Tonic Water', 'Ginger Beer', 'Ginger Ale', 'Cola',
-    'Orange Juice', 'Cranberry Juice', 'Pineapple Juice', 'Grapefruit Juice',
+    'Orange Juice', 'Cranberry Juice', 'Pineapple Juice', 'Grapefruit Juice', 'Coconut Cream',
     // Citrus & syrups
     'Lemon Juice', 'Lime Juice', 'Simple Syrup', 'Grenadine', 'Honey',
     // Bitters
     'Angostura Bitters', 'Orange Bitters',
     // Garnishes & extras
-    'Maraschino Cherries', 'Olives', 'Mint', 'Ice', 'Salt', 'Sugar', 'Ice'
+    'Maraschino Cherries', 'Olives', 'Mint', 'Ice', 'Salt', 'Sugar'
   ];
 
   private _boundBeforeInstall = (e: Event) => {
