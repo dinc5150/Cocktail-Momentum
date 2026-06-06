@@ -5,6 +5,7 @@ import type { Ingredient } from '../types';
 
 type Availability = 'checking' | 'available' | 'downloadable' | 'unsupported';
 type GenStatus = 'idle' | 'loading' | 'streaming' | 'done' | 'error';
+type FavouriteRecipe = { name: string; text: string; savedAt: number };
 
 @customElement('cocktail-ai')
 export class CocktailAi extends LitElement {
@@ -16,6 +17,11 @@ export class CocktailAi extends LitElement {
   @state() private streamedText = '';
   @state() private downloadPct = 0;
   @state() private errorMsg = '';
+  @state() private _favourites: FavouriteRecipe[] = [];
+  @state() private _parsedRecipes: Array<{ name: string; body: string }> = [];
+  @state() private _savedNames = new Set<string>();
+  @state() private _expandedFavs = new Set<number>();
+  @state() private _showFavourites = true;
 
   private _controller: AbortController | null = null;
 
@@ -259,11 +265,181 @@ export class CocktailAi extends LitElement {
       color: var(--text-muted);
       padding: 10px 0 2px;
     }
+
+    .recipe-cards {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .recipe-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .recipe-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      gap: 10px;
+    }
+
+    .recipe-card-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      flex: 1;
+    }
+
+    .btn-save {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-save:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-save.saved {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .recipe-card-body {
+      padding: 14px 16px;
+      font-size: 0.85rem;
+      line-height: 1.65;
+      color: var(--text-primary);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .fav-section {
+      margin-top: 28px;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+
+    .fav-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .fav-title {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .fav-count {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-left: 6px;
+    }
+
+    .fav-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.72rem;
+      padding: 3px 8px;
+    }
+
+    .fav-toggle:hover {
+      color: var(--text-primary);
+      background: var(--bg-hover);
+    }
+
+    .fav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .fav-item {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .fav-item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      cursor: pointer;
+      gap: 10px;
+    }
+
+    .fav-item-header:hover {
+      background: var(--bg-hover);
+    }
+
+    .fav-item-name {
+      font-size: 0.87rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      flex: 1;
+    }
+
+    .fav-item-meta {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .btn-remove {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.82rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: color 0.15s;
+      line-height: 1;
+    }
+
+    .btn-remove:hover {
+      color: #e07070;
+    }
+
+    .fav-item-body {
+      padding: 12px 14px;
+      border-top: 1px solid var(--border);
+      font-size: 0.82rem;
+      line-height: 1.65;
+      color: var(--text-secondary);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
   `;
 
   override connectedCallback(): void {
     super.connectedCallback();
     this._checkAvailability();
+    this._loadFavourites();
   }
 
   override disconnectedCallback(): void {
@@ -288,6 +464,57 @@ export class CocktailAi extends LitElement {
     } catch {
       this.availability = 'unsupported';
     }
+  }
+
+  private _loadFavourites(): void {
+    try {
+      const raw = localStorage.getItem('cocktail-favourites');
+      if (raw) {
+        this._favourites = JSON.parse(raw) as FavouriteRecipe[];
+        this._savedNames = new Set(this._favourites.map(f => f.name));
+      }
+    } catch {
+      this._favourites = [];
+    }
+  }
+
+  private _parseRecipes(text: string): Array<{ name: string; body: string }> {
+    const parts = text.split(/\n(?=#{1,2}\s)/);
+    const recipes = parts
+      .map(part => {
+        const firstNewline = part.indexOf('\n');
+        const header = firstNewline === -1 ? part : part.slice(0, firstNewline);
+        const body = firstNewline === -1 ? '' : part.slice(firstNewline + 1).trim();
+        const nameMatch = header.match(/^#{1,2}\s+(?:\d+[.)\s]*)?(.+?)(?:\s*\*+)?$/);
+        if (!nameMatch || body.length < 30) return null;
+        return { name: nameMatch[1].trim(), body };
+      })
+      .filter((r): r is { name: string; body: string } => r !== null);
+    return recipes.length >= 2 ? recipes : [];
+  }
+
+  private _saveFavourite(name: string, text: string): void {
+    if (this._savedNames.has(name)) return;
+    const entry: FavouriteRecipe = { name, text, savedAt: Date.now() };
+    this._favourites = [...this._favourites, entry];
+    this._savedNames = new Set(this._favourites.map(f => f.name));
+    localStorage.setItem('cocktail-favourites', JSON.stringify(this._favourites));
+  }
+
+  private _removeFavourite(name: string): void {
+    this._favourites = this._favourites.filter(f => f.name !== name);
+    this._savedNames = new Set(this._favourites.map(f => f.name));
+    localStorage.setItem('cocktail-favourites', JSON.stringify(this._favourites));
+  }
+
+  private _toggleFavExpand(savedAt: number): void {
+    const next = new Set(this._expandedFavs);
+    if (next.has(savedAt)) {
+      next.delete(savedAt);
+    } else {
+      next.add(savedAt);
+    }
+    this._expandedFavs = next;
   }
 
   private async _generate(): Promise<void> {
@@ -353,6 +580,7 @@ export class CocktailAi extends LitElement {
           err instanceof Error ? err.message : 'An unknown error occurred.';
       }
     } finally {
+      this._parsedRecipes = this._parseRecipes(this.streamedText);
       session?.destroy();
       this._controller = null;
     }
@@ -369,6 +597,7 @@ export class CocktailAi extends LitElement {
     this.streamedText = '';
     this.errorMsg = '';
     this.downloadPct = 0;
+    this._parsedRecipes = [];
   }
 
   override render() {
@@ -473,7 +702,7 @@ export class CocktailAi extends LitElement {
                 `
               : ''}
 
-            ${this.streamedText || this.genStatus === 'streaming'
+            ${this.genStatus === 'streaming' || (this.genStatus === 'done' && this._parsedRecipes.length < 2 && this.streamedText)
               ? html`
                   <div
                     class="result-area ${this.genStatus === 'streaming'
@@ -482,6 +711,30 @@ export class CocktailAi extends LitElement {
                   >${this.streamedText}${this.genStatus === 'streaming'
                       ? html`<span class="cursor"></span>`
                       : ''}</div>
+                `
+              : ''}
+
+            ${this.genStatus === 'done' && this._parsedRecipes.length >= 2
+              ? html`
+                  <div class="recipe-cards">
+                    ${this._parsedRecipes.map(recipe => {
+                      const isSaved = this._savedNames.has(recipe.name);
+                      return html`
+                        <div class="recipe-card">
+                          <div class="recipe-card-header">
+                            <span class="recipe-card-name">${recipe.name}</span>
+                            <button
+                              class="btn-save ${isSaved ? 'saved' : ''}"
+                              @click=${() => isSaved
+                                ? this._removeFavourite(recipe.name)
+                                : this._saveFavourite(recipe.name, recipe.body)}
+                            >${isSaved ? '♥ Saved' : '♡ Save'}</button>
+                          </div>
+                          <div class="recipe-card-body">${recipe.body}</div>
+                        </div>
+                      `;
+                    })}
+                  </div>
                 `
               : ''}
 
@@ -502,6 +755,41 @@ export class CocktailAi extends LitElement {
                 `
               : ''}
           `}
+
+      ${this._favourites.length > 0 ? html`
+        <div class="fav-section">
+          <div class="fav-header">
+            <div>
+              <span class="fav-title">Favourites</span>
+              <span class="fav-count">(${this._favourites.length})</span>
+            </div>
+            <button class="fav-toggle" @click=${() => { this._showFavourites = !this._showFavourites; }}>
+              ${this._showFavourites ? 'Hide' : 'Show'}
+            </button>
+          </div>
+          ${this._showFavourites ? html`
+            <div class="fav-list">
+              ${this._favourites.map(fav => {
+                const expanded = this._expandedFavs.has(fav.savedAt);
+                return html`
+                  <div class="fav-item">
+                    <div class="fav-item-header" @click=${() => this._toggleFavExpand(fav.savedAt)}>
+                      <span class="fav-item-name">${fav.name}</span>
+                      <span class="fav-item-meta">${new Date(fav.savedAt).toLocaleDateString()}</span>
+                      <button
+                        class="btn-remove"
+                        title="Remove from favourites"
+                        @click=${(e: Event) => { e.stopPropagation(); this._removeFavourite(fav.name); }}
+                      >✕</button>
+                    </div>
+                    ${expanded ? html`<div class="fav-item-body">${fav.text}</div>` : ''}
+                  </div>
+                `;
+              })}
+            </div>
+          ` : ''}
+        </div>
+      ` : ''}
     `;
   }
 }
