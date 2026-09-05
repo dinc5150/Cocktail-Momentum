@@ -1,0 +1,100 @@
+@if (auth.isGuest()) {
+  <cm-notice kind="info" class="guest-notice">
+    You're viewing {{ me()?.ownerLabel }}'s bar. You can generate cocktails, but nothing
+    here can be saved.
+  </cm-notice>
+}
+
+<cm-card label="Generate">
+  <div class="form">
+    <cm-input
+      placeholder="e.g. something citrusy for a hot afternoon"
+      focusStyle="primary"
+      label="Describe the cocktail you want"
+      [(value)]="prompt"
+    />
+
+    <div class="strictness">
+      <cm-pill [kind]="strictness() === 'strict' ? 'filter-active' : 'filter'" (pressed)="strictness.set('strict')">
+        Only what I have
+      </cm-pill>
+      <cm-pill [kind]="strictness() === 'nearly' ? 'filter-active' : 'filter'" (pressed)="strictness.set('nearly')">
+        Almost everything I have
+      </cm-pill>
+      <cm-pill [kind]="strictness() === 'any' ? 'filter-active' : 'filter'" (pressed)="strictness.set('any')">
+        Anything goes
+      </cm-pill>
+    </div>
+
+    <div class="generate-row">
+      <cm-button
+        variant="primary"
+        [disabled]="generating() || !prompt().trim() || quotaExhausted()"
+        (pressed)="generate()"
+      >
+        @if (generating()) {
+          Generating…
+        } @else {
+          Generate
+        }
+      </cm-button>
+      @if (quotaLine(); as line) {
+        <span class="quota-line">{{ line }}</span>
+      }
+    </div>
+
+    @if (quotaExhausted() && me()?.quota?.resetsUtc) {
+      <cm-notice kind="info">Your daily limit is used. Resets at {{ me()!.quota.resetsUtc | date: 'HH:mm' }} UTC.</cm-notice>
+    }
+  </div>
+
+  @if (generating()) {
+    <div class="progress">
+      <cm-spinner />
+      <span>Mixing up some ideas…</span>
+    </div>
+  }
+
+  @if (errorNotice()) {
+    <cm-notice kind="error">{{ errorNotice() }}</cm-notice>
+  }
+
+  @if (notice()) {
+    <cm-notice kind="info">{{ notice() }}</cm-notice>
+  }
+</cm-card>
+
+<p class="sr-only" role="status">{{ resultsAnnouncement() }}</p>
+
+@for (cocktail of cocktails(); track cocktail.name) {
+  <cm-card>
+    <div class="cocktail-header">
+      <h3 class="cocktail-name">{{ cocktail.name }}</h3>
+      @if (!auth.isGuest()) {
+        <cm-button variant="icon" [ariaLabel]="'Save ' + cocktail.name + ' to favourites'" (pressed)="save(cocktail)">
+          {{ savedNames().has(cocktail.name) ? '♥' : '♡' }}
+        </cm-button>
+      }
+    </div>
+    <p class="cocktail-description">{{ cocktail.description }}</p>
+
+    <h4 class="section-title">Ingredients</h4>
+    <ul class="ingredients">
+      @for (ingredient of cocktail.ingredients; track ingredient.name) {
+        <li [class.out-of-stock]="!ingredient.inStock">
+          {{ ingredient.measure }} {{ ingredient.name }}
+          @if (!ingredient.inStock) {
+            <span class="tag">not in stock</span>
+          }
+        </li>
+      }
+    </ul>
+
+    <h4 class="section-title">Steps</h4>
+    <ol class="steps">
+      @for (step of cocktail.steps; track $index) {
+        <li>{{ step }}</li>
+      }
+    </ol>
+  </cm-card>
+}

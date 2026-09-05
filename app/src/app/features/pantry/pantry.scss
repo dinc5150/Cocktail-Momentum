@@ -1,0 +1,52 @@
+.loading-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.add-row {
+  display: flex;
+  align-items: flex-end; // lines the button up with the input box, not its label above it
+  gap: 10px;
+  margin-bottom: 20px;
+
+  cm-input {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; // ingredient rows, STYLE_GUIDE §4
+}
+
+.footer {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.seed-message {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}

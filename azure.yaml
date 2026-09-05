@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+#
+# azd is used for INFRASTRUCTURE PROVISIONING ONLY in this project (`azd provision`).
+# Day-to-day deploys go through .github/workflows/deploy.yml, which builds the Angular
+# app and publishes the .NET API itself, then hands both to
+# Azure/static-web-apps-deploy@v1 with skip_app_build/skip_api_build true. See
+# CLAUDE.md and docs/IMPLEMENTATION_PLAN.md Phase 2 for why.
+#
+# The `web` service below lets `azd deploy` / `azd up` push the front end manually for
+# local testing. It does not deploy the managed API — azd's staticwebapp host only
+# publishes the app content. Use `swa deploy` locally (see CLAUDE.md) if you need the
+# API pushed outside of GitHub Actions.
+name: cocktail-momentum
+services:
+  web:
+    project: ./app
+    dist: dist/app/browser
+    language: ts
+    host: staticwebapp

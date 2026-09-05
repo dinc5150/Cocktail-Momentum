@@ -1,0 +1,44 @@
+:host {
+  display: block;
+}
+
+// STYLE_GUIDE §3 "Section / card label" recipe — --text-secondary passes AA (4.5:1, §2.4),
+// unlike the placeholder it sits above, so the field always has a legible description.
+.field-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+input {
+  width: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-input);
+  color: var(--text-primary);
+  padding: 10px 14px;
+  outline: none; // acceptable only because one of the two treatments below replaces it
+  transition: border-color var(--dur-border), box-shadow var(--dur-border);
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.focus-primary:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.focus-secondary:focus {
+  border-color: var(--accent);
+}

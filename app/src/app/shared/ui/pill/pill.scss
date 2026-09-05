@@ -1,0 +1,44 @@
+:host {
+  display: inline-block;
+}
+
+.pill {
+  font-family: inherit;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color var(--dur-border), border-color var(--dur-border), color var(--dur-border);
+}
+
+.pill-filter-active {
+  background: var(--accent-glow);
+  border-color: var(--accent);
+  color: var(--accent-light);
+}
+
+.pill-positive {
+  background: var(--positive-fill);
+  border-color: var(--positive-border);
+  color: var(--positive-text);
+
+  &:hover {
+    background: var(--positive-fill-hover);
+  }
+}
+
+.pill-neutral {
+  background: var(--neutral-off-fill);
+  border-color: var(--neutral-off-border);
+  color: var(--neutral-off-text);
+
+  &:hover {
+    background: var(--neutral-off-fill-hover);
+  }
+}

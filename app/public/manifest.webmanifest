@@ -1,0 +1,36 @@
+{
+  "name": "Cocktail Momentum",
+  "short_name": "Cocktail Momentum",
+  "description": "Tell us what's in your bar — get 3 to 5 cocktails you can actually make.",
+  "theme_color": "#c8922a",
+  "background_color": "#0d0d0d",
+  "display": "standalone",
+  "scope": "./",
+  "start_url": "./",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

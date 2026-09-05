@@ -1,0 +1,7 @@
+<div
+  class="notice"
+  [class]="'notice-' + kind()"
+  [attr.role]="kind() === 'error' ? 'alert' : 'status'"
+>
+  <ng-content />
+</div>

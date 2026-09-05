@@ -1,0 +1,55 @@
+@if (loading()) {
+  <cm-card>
+    <div class="loading-row">
+      <cm-spinner />
+      <span>Loading share links…</span>
+    </div>
+  </cm-card>
+} @else {
+  <cm-card label="Share your bar">
+    <p class="lede">
+      Generate a link that lets someone else make cocktails from your pantry, without
+      signing in. It works for 12 hours and can't add, edit, or save anything.
+    </p>
+
+    <cm-button variant="primary" [disabled]="creating()" (pressed)="createLink()">
+      @if (creating()) {
+        Creating…
+      } @else {
+        Create share link
+      }
+    </cm-button>
+
+    @if (newUrl(); as url) {
+      <div class="new-link">
+        <p class="new-link-label">Copy this now — it won't be shown again:</p>
+        <div class="url-row">
+          <span id="share-url-text" class="url-text">{{ url }}</span>
+          <cm-button variant="secondary" (pressed)="copy()">
+            @if (copied()) {
+              Copied
+            } @else {
+              Copy
+            }
+          </cm-button>
+        </div>
+        <p class="expiry-note">Expires in 12 hours.</p>
+      </div>
+    }
+  </cm-card>
+
+  <cm-card label="Active links">
+    @if (shares.links().length === 0) {
+      <cm-empty-state message="No active share links. Create one above to let someone else generate from your bar." />
+    } @else {
+      <div class="links">
+        @for (link of shares.links(); track link.id) {
+          <div class="link-row">
+            <span class="link-info">{{ link.label || 'Share link' }} — {{ timeUntil(link.expiresUtc) }}</span>
+            <cm-button variant="icon-danger" ariaLabel="Revoke this share link" (pressed)="revoke(link.id)">✕</cm-button>
+          </div>
+        }
+      </div>
+    }
+  </cm-card>
+}

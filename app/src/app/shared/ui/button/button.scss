@@ -1,0 +1,127 @@
+:host {
+  display: inline-block;
+}
+
+.btn {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-input);
+  padding: 10px 18px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  transition:
+    background-color var(--dur-border),
+    border-color var(--dur-border),
+    box-shadow var(--dur-border),
+    color var(--dur-border),
+    opacity var(--dur-border);
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+// The only filled button — one per card maximum, per STYLE_GUIDE §6.2.
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg-page);
+
+  &:hover:not(:disabled) {
+    background: var(--accent-light);
+    box-shadow: 0 0 14px var(--accent-glow);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+  }
+}
+
+.btn-secondary {
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+
+  &:hover:not(:disabled) {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+  }
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--accent-light);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-pill);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-size: 0.75rem;
+
+  &:hover:not(:disabled) {
+    background: var(--accent-glow);
+  }
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  padding: 4px 0;
+  border-radius: 0;
+  transition: color var(--dur-color);
+
+  &:hover:not(:disabled) {
+    color: var(--accent-light);
+  }
+}
+
+.btn-icon {
+  background: transparent;
+  color: var(--text-muted);
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: var(--radius-icon-btn);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--dur-color), color var(--dur-color);
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-primary);
+  }
+}
+
+.btn-icon-danger {
+  background: transparent;
+  color: var(--text-muted);
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: var(--radius-icon-btn);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--dur-color), color var(--dur-color);
+
+  &:hover:not(:disabled) {
+    background: rgba(160, 48, 48, 0.22);
+    color: var(--danger-icon);
+  }
+}
+
+// Interrupts work; never deletes data — STYLE_GUIDE §6.2.
+.btn-destructive {
+  background: rgba(180, 60, 60, 0.15);
+  color: var(--danger-text);
+  border: 1px solid var(--danger-border);
+
+  &:hover:not(:disabled) {
+    background: rgba(180, 60, 60, 0.25);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+  }
+}

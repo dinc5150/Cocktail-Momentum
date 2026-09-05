@@ -1,0 +1,42 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/0.1.0-preview/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentName": {
+      "value": "${AZURE_ENV_NAME}"
+    },
+    "location": {
+      "value": "${AZURE_LOCATION=australiaeast}"
+    },
+    "namePrefix": {
+      "value": "${NAME_PREFIX=cktail}"
+    },
+    "sendGridApiKey": {
+      "value": "${SENDGRID_API_KEY}"
+    },
+    "sendGridFromEmail": {
+      "value": "${SENDGRID_FROM_EMAIL}"
+    },
+    "sendGridFromName": {
+      "value": "${SENDGRID_FROM_NAME=Cocktail Momentum}"
+    },
+    "jwtSigningKey": {
+      "value": "${JWT_SIGNING_KEY}"
+    },
+    "magicLinkTtlMinutes": {
+      "value": "${MAGIC_LINK_TTL_MINUTES=15}"
+    },
+    "sessionTtlDays": {
+      "value": "${SESSION_TTL_DAYS=30}"
+    },
+    "shareLinkTtlHours": {
+      "value": "${SHARE_LINK_TTL_HOURS=12}"
+    },
+    "dailyGenerationLimit": {
+      "value": "${DAILY_GENERATION_LIMIT=10}"
+    },
+    "unlimitedEmails": {
+      "value": "${UNLIMITED_EMAILS=}"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+<label [for]="inputId" class="field-label">{{ label() }}</label>
+<input
+  [id]="inputId"
+  [type]="type()"
+  [placeholder]="placeholder()"
+  [disabled]="disabled()"
+  [class.focus-primary]="focusStyle() === 'primary'"
+  [class.focus-secondary]="focusStyle() === 'secondary'"
+  [value]="value()"
+  (input)="onInput($event)"
+/>

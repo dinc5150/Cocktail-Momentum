@@ -1,0 +1,79 @@
+.loading-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.lede {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+
+.new-link {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.new-link-label {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  margin: 0 0 8px;
+}
+
+.url-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.url-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-input);
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  color: var(--text-primary);
+}
+
+// --text-secondary, not --text-muted: nothing else on the page states the expiry window —
+// STYLE_GUIDE §2.4 "must never carry information that exists nowhere else." Phase 15.
+.expiry-note {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  margin: 8px 0 0;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.link-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-input);
+  background: var(--bg-surface);
+}
+
+.link-info {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

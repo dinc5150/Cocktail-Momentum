@@ -1,0 +1,12 @@
+@if (error()) {
+  <cm-card>
+    <cm-notice kind="error">{{ error() }}</cm-notice>
+  </cm-card>
+} @else {
+  <cm-card>
+    <div class="loading-row">
+      <cm-spinner />
+      <span>Signing you in…</span>
+    </div>
+  </cm-card>
+}

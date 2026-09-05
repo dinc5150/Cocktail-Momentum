@@ -1,0 +1,36 @@
+@if (loading()) {
+  <cm-card>
+    <div class="loading-row">
+      <cm-spinner />
+      <span>Loading your starter pantry…</span>
+    </div>
+  </cm-card>
+} @else {
+  <cm-card label="Set up your pantry">
+    <p class="lede">
+      We've added about 70 common bar ingredients. Mark what you actually have — you can
+      always add more later from the Pantry tab.
+    </p>
+
+    @for (group of grouped(); track group[0]) {
+      <div class="category">
+        <h3 class="category-name">{{ group[0] }}</h3>
+        <div class="items">
+          @for (item of group[1]; track item.id) {
+            <cm-pill [kind]="item.inStock ? 'positive' : 'neutral'" (pressed)="toggle(item)">
+              {{ item.name }}
+            </cm-pill>
+          }
+        </div>
+      </div>
+    }
+
+    <cm-button variant="primary" [disabled]="saving()" (pressed)="finish()">
+      @if (saving()) {
+        Saving…
+      } @else {
+        Done — take me to Generate
+      }
+    </cm-button>
+  </cm-card>
+}

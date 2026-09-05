@@ -1,0 +1,8 @@
+<nav class="nav" aria-label="Main">
+  <a routerLink="/generate" routerLinkActive="active" class="nav-item">Generate</a>
+  @if (!auth.isGuest()) {
+    <a routerLink="/pantry" routerLinkActive="active" class="nav-item">Pantry</a>
+    <a routerLink="/favourites" routerLinkActive="active" class="nav-item">Favourites</a>
+    <a routerLink="/share" routerLinkActive="active" class="nav-item">Share</a>
+  }
+</nav>

@@ -1,0 +1,24 @@
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin var(--dur-spin) linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// STYLE_GUIDE §7: added now, at the point the spinner is authored, rather than deferred —
+// the guide's own words are "if anything joins the spinner and caret, add a query that
+// disables the loops," and this IS that spinner.
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}

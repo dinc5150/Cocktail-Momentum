@@ -1,0 +1,55 @@
+@if (loading()) {
+  <cm-card>
+    <div class="loading-row">
+      <cm-spinner />
+      <span>Loading your favourites…</span>
+    </div>
+  </cm-card>
+} @else if (favourites.items().length === 0) {
+  <cm-card label="Favourites">
+    <cm-empty-state message="No favourites yet. Save a cocktail from the Generate tab to see it here." />
+  </cm-card>
+} @else {
+  @for (item of favourites.items(); track item.id) {
+    <cm-card>
+      <div
+        class="header"
+        role="button"
+        tabindex="0"
+        [attr.aria-expanded]="expandedId() === item.id"
+        [attr.aria-label]="item.name + ' recipe'"
+        (click)="toggleExpand(item.id)"
+        (keydown.enter)="toggleExpand(item.id)"
+        (keydown.space)="toggleExpand(item.id); $event.preventDefault()"
+      >
+        <h3 class="name">{{ item.name }}</h3>
+        <div class="header-actions">
+          <span class="toggle-hint" aria-hidden="true">{{ expandedId() === item.id ? 'Hide' : 'Show' }} recipe</span>
+          <cm-button
+            variant="icon-danger"
+            ariaLabel="Remove {{ item.name }} from favourites"
+            (pressed)="remove(item.id)"
+            (click)="$event.stopPropagation()"
+          >✕</cm-button>
+        </div>
+      </div>
+      <p class="description">{{ item.description }}</p>
+
+      @if (expandedId() === item.id) {
+        <h4 class="section-title">Ingredients</h4>
+        <ul class="ingredients">
+          @for (ingredient of item.ingredients; track ingredient.name) {
+            <li>{{ ingredient.measure }} {{ ingredient.name }}</li>
+          }
+        </ul>
+
+        <h4 class="section-title">Steps</h4>
+        <ol class="steps">
+          @for (step of item.steps; track $index) {
+            <li>{{ step }}</li>
+          }
+        </ol>
+      }
+    </cm-card>
+  }
+}

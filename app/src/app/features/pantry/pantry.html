@@ -1,0 +1,71 @@
+@if (loading()) {
+  <cm-card>
+    <div class="loading-row">
+      <cm-spinner />
+      <span>Loading your pantry…</span>
+    </div>
+  </cm-card>
+} @else {
+  <cm-card label="Pantry">
+    <div class="controls">
+      <cm-input type="search" placeholder="Search ingredients…" label="Search ingredients" [(value)]="search" />
+      <div class="filters">
+        <cm-pill [kind]="filter() === 'all' ? 'filter-active' : 'filter'" (pressed)="filter.set('all')">All</cm-pill>
+        <cm-pill [kind]="filter() === 'inStock' ? 'filter-active' : 'filter'" (pressed)="filter.set('inStock')">
+          In stock
+        </cm-pill>
+        <cm-pill [kind]="filter() === 'outOfStock' ? 'filter-active' : 'filter'" (pressed)="filter.set('outOfStock')">
+          Out of stock
+        </cm-pill>
+        <cm-pill [kind]="filter() === 'toOrder' ? 'filter-active' : 'filter'" (pressed)="filter.set('toOrder')">
+          To order
+        </cm-pill>
+      </div>
+    </div>
+
+    <div class="add-row">
+      <cm-input
+        placeholder="Add an ingredient…"
+        focusStyle="primary"
+        label="New ingredient name"
+        [(value)]="newName"
+      />
+      <cm-button variant="primary" [disabled]="adding() || !newName().trim()" (pressed)="addItem()">
+        @if (adding()) {
+          Adding…
+        } @else {
+          Add
+        }
+      </cm-button>
+    </div>
+
+    @if (filtered().length === 0) {
+      <cm-empty-state [message]="emptyMessage()" />
+    } @else {
+      <div class="rows">
+        @for (item of filtered(); track item.id) {
+          <app-pantry-row
+            [item]="item"
+            (toggleStock)="toggleStock(item)"
+            (toggleOrder)="toggleOrder(item)"
+            (rename)="rename(item, $event)"
+            (remove)="remove(item)"
+          />
+        }
+      </div>
+    }
+
+    <div class="footer">
+      <cm-button variant="ghost" [disabled]="seeding()" (pressed)="addExamples()">
+        @if (seeding()) {
+          Adding…
+        } @else {
+          Add example bar items
+        }
+      </cm-button>
+      @if (seedMessage()) {
+        <span class="seed-message">{{ seedMessage() }}</span>
+      }
+    </div>
+  </cm-card>
+}

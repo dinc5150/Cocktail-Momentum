@@ -1,0 +1,30 @@
+<div class="row" [class.out-of-stock]="!item().inStock">
+  <cm-pill [kind]="item().inStock ? 'positive' : 'neutral'" (pressed)="toggleStock.emit()">
+    {{ item().inStock ? 'In stock' : 'Out of stock' }}
+  </cm-pill>
+
+  @if (editing()) {
+    <input
+      class="inline-edit"
+      [attr.aria-label]="'Rename ' + item().name"
+      [value]="draftName()"
+      (input)="draftName.set($any($event.target).value)"
+      (keydown.enter)="confirmEdit()"
+      (keydown.escape)="cancelEdit()"
+      (blur)="confirmEdit()"
+      autofocus
+    />
+  } @else {
+    <span class="name">{{ item().name }}</span>
+  }
+
+  <div class="actions">
+    <cm-button variant="icon" ariaLabel="Rename {{ item().name }}" (pressed)="startEdit()">✎</cm-button>
+    <cm-button
+      variant="icon"
+      [ariaLabel]="item().toOrder ? 'Remove ' + item().name + ' from order list' : 'Add ' + item().name + ' to order list'"
+      (pressed)="toggleOrder.emit()"
+    >{{ item().toOrder ? '★' : '☆' }}</cm-button>
+    <cm-button variant="icon-danger" ariaLabel="Delete {{ item().name }}" (pressed)="remove.emit()">✕</cm-button>
+  </div>
+</div>

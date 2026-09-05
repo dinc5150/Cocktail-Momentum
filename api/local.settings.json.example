@@ -1,0 +1,32 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+
+    "STORAGE_CONNECTION_STRING": "UseDevelopmentStorage=true",
+
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": "",
+
+    "AZURE_OPENAI_ENDPOINT": "https://<your-account>.openai.azure.com/",
+    "AZURE_OPENAI_KEY": "<azure-openai-key>",
+    "AZURE_OPENAI_DEPLOYMENT": "gpt-5-nano",
+
+    "SENDGRID_API_KEY": "<sendgrid-api-key>",
+    "SENDGRID_FROM_EMAIL": "no-reply@example.com",
+    "SENDGRID_FROM_NAME": "Cocktail Momentum",
+
+    "JWT_SIGNING_KEY": "<base64, at least 32 random bytes - e.g. `openssl rand -base64 32`>",
+    "APP_BASE_URL": "http://localhost:4280",
+
+    "MAGIC_LINK_TTL_MINUTES": "15",
+    "SESSION_TTL_DAYS": "30",
+    "SHARE_LINK_TTL_HOURS": "12",
+
+    "DAILY_GENERATION_LIMIT": "10",
+    "UNLIMITED_EMAILS": ""
+  },
+  "Host": {
+    "CORS": "*"
+  }
+}

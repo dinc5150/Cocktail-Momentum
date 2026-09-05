@@ -1,32 +1,42 @@
-# Dependencies
+# Node / Angular
 node_modules/
-
-# Build output
 dist/
-dev-dist/
-
-# Logs
-logs/
+.angular/
 *.log
 npm-debug.log*
+yarn-error.log*
+*.tsbuildinfo
 
-# Environment variables
-.env
-.env.local
-.env.*.local
+# .NET
+bin/
+obj/
+*.user
+.vs/
+api_publish/
 
-# Editor directories
+# Azure Functions / SWA local
+local.settings.json
+.azurite/
+__azurite_db*__.json
+__blobstorage__/
+__queuestorage__/
+__tablestorage__/
 .vscode/
-.idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+.swa/
 
-# OS files
+# azd
+.azure/
+
+# Env / secrets
+.env
+.env.*
+*.secrets.json
+
+# OS
 .DS_Store
 Thumbs.db
 
-# TypeScript cache
-*.tsbuildinfo
+# Editors
+*.swp
+.idea/
+app/node_modules/

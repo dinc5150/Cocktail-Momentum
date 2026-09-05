@@ -1,0 +1,116 @@
+// Cocktail Momentum — global design tokens and reset.
+// This is the ONLY global stylesheet (CLAUDE.md "Front end (Angular)"). Every component
+// reads these custom properties; none redeclares them. See docs/STYLE_GUIDE.md.
+
+:root {
+  // --- Colour (STYLE_GUIDE §2.1) ---
+  --bg-page: #0d0d0d;
+  --bg-card: #161616;
+  --bg-surface: #1e1e1e;
+  --bg-hover: #262626;
+  --border: #2e2e2e;
+
+  --text-primary: #e8dcc8;
+  --text-secondary: #8a7d6e;
+  --text-muted: #5a5045; // fails AA — decorative/tertiary only, see STYLE_GUIDE §2.4
+
+  --accent: #c8922a;
+  --accent-light: #f0b544;
+  --accent-glow: rgba(200, 146, 42, 0.25);
+
+  // --- Semantic colour (STYLE_GUIDE §2.3) ---
+  // Promoted to tokens here rather than left as repeated literals — the previous
+  // (Lit) implementation's "Known inconsistencies" list flagged exactly this as the
+  // obvious next step; this rebuild does it from the start.
+  --positive-border: #4a9e5c;
+  --positive-text: #6bbf7a;
+  --positive-fill: rgba(74, 158, 92, 0.15);
+  --positive-fill-hover: rgba(74, 158, 92, 0.28);
+
+  --neutral-off-border: #5a5045;
+  --neutral-off-text: #7a6e60;
+  --neutral-off-fill: rgba(90, 80, 69, 0.20);
+  --neutral-off-fill-hover: rgba(90, 80, 69, 0.35);
+
+  --danger-border: rgba(180, 60, 60, 0.28);
+  --danger-icon: #e06060;
+  --danger-text: #e07070;
+  --danger-fill: rgba(180, 60, 60, 0.08);
+  --danger-fill-hover: rgba(180, 60, 60, 0.25);
+
+  --warning-border: rgba(200, 146, 42, 0.20);
+  --warning-fill: rgba(200, 146, 42, 0.08);
+  // Warning text uses --text-secondary directly — no separate token needed.
+
+  --olive: #3a6645; // app icon only
+
+  // --- Shape (STYLE_GUIDE §5) — smaller element, tighter radius ---
+  --radius-pill: 20px;
+  --radius-card: 12px;
+  --radius-pane: 10px; // result pane, recipe cards, favourite items
+  --radius-input: 8px; // inputs, selects, buttons, notices, error box
+  --radius-icon-btn: 6px;
+  --radius-inline-edit: 5px;
+  --radius-badge: 4px;
+
+  // --- Motion (STYLE_GUIDE §7) ---
+  --dur-color: 0.15s; // icon buttons, ghost links, small buttons
+  --dur-border: 0.2s; // border/background/box-shadow on inputs, rows, pills, filters
+  --dur-progress: 0.3s ease; // progress bar width
+  --dur-spin: 0.8s;
+  --dur-blink: 0.9s;
+}
+
+// --- Reset ---
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit; // native controls otherwise fall back to the UA font
+  color: inherit;
+}
+
+a {
+  color: var(--accent-light);
+}
+
+// Visually hides content while keeping it in the accessibility tree — e.g. a live-region
+// status announcement with no visible equivalent. Standard clip-based technique: `display:
+// none` would pull it from the tree entirely, defeating the point.
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

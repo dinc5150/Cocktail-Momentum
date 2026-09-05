@@ -1,0 +1,97 @@
+.guest-notice {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.strictness {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.generate-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quota-line {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-top: 12px;
+}
+
+.cocktail-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.cocktail-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.cocktail-description {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+
+.section-title {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0 0 8px;
+}
+
+.ingredients,
+.steps {
+  margin: 0 0 16px;
+  padding-left: 20px;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  line-height: 1.65;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Colour alone isn't enough at this text size to stay AA (STYLE_GUIDE §2.4), so an
+// out-of-stock ingredient also gets a text tag, not just the neutral-off colour.
+.ingredients li.out-of-stock {
+  color: var(--neutral-off-text);
+}
+
+// --text-secondary, not --text-muted: this tag is the only TEXTUAL indicator that a
+// suggested ingredient isn't in the pantry (the line-wide colour is a colour-only,
+// reinforcing signal, not a substitute) — STYLE_GUIDE §2.4 "must never carry information
+// that exists nowhere else." Phase 15.
+.tag {
+  font-size: 0.68rem;
+  color: var(--text-secondary);
+  margin-left: 4px;
+}

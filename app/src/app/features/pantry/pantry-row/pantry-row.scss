@@ -1,0 +1,51 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-input);
+  background: var(--bg-surface);
+  transition: background-color var(--dur-border), border-color var(--dur-border);
+
+  &:hover {
+    background: var(--bg-hover);
+    border-color: var(--accent);
+  }
+}
+
+.name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+// Struck through and muted, but the ROW keeps full opacity — a dimmed row would make the
+// toggle harder to see right when a user wants to flip it back. See STYLE_GUIDE §6.4.
+.row.out-of-stock .name {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.inline-edit {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg-page);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-inline-edit);
+  color: var(--text-primary);
+  padding: 4px 8px;
+  font: inherit;
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}

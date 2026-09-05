@@ -1,0 +1,23 @@
+<div class="app">
+  <header class="header">
+    <h1 class="title">Cocktail Momentum</h1>
+    <div class="divider"></div>
+    <p class="subtitle">Tell us what's in your bar</p>
+    <cm-nav />
+    @if (installPrompt.available()) {
+      <cm-button variant="outline" class="install-btn" (pressed)="installPrompt.promptInstall()">
+        Install app
+      </cm-button>
+    }
+  </header>
+
+  <main class="content">
+    @if (!onlineStore.online()) {
+      <cm-notice kind="info" class="offline-notice">
+        You're offline — showing what's cached. Some actions won't work until you're back
+        online.
+      </cm-notice>
+    }
+    <router-outlet />
+  </main>
+</div>

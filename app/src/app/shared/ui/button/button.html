@@ -1,0 +1,9 @@
+<button
+  [type]="type()"
+  [class]="'btn btn-' + variant()"
+  [disabled]="disabled()"
+  [attr.aria-label]="ariaLabel() ?? null"
+  (click)="onClick()"
+>
+  <ng-content />
+</button>

@@ -1,0 +1,17 @@
+:host {
+  display: block;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.card-label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 14px; // label -> content gap inside a card, STYLE_GUIDE §4
+}

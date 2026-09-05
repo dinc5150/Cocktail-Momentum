@@ -1,0 +1,27 @@
+<cm-card>
+  <h2 class="heading">Sign in</h2>
+  <p class="lede">
+    Enter your email and we'll send you a one-time link to sign in — no password needed.
+  </p>
+
+  <form class="form" (submit)="$event.preventDefault(); submit()">
+    <cm-input
+      type="email"
+      placeholder="you@example.com"
+      focusStyle="primary"
+      label="Email address"
+      [(value)]="email"
+    />
+    <cm-button variant="primary" type="submit" [disabled]="submitting()">
+      @if (submitting()) {
+        Sending…
+      } @else {
+        Send me a link
+      }
+    </cm-button>
+  </form>
+
+  @if (error()) {
+    <cm-notice kind="error">{{ error() }}</cm-notice>
+  }
+</cm-card>

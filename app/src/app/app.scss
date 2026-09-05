@@ -1,0 +1,54 @@
+// STYLE_GUIDE §4 layout, extended with the mobile bottom-nav clearance from §6.7.
+
+.app {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 48px 20px 80px;
+
+  @media (max-width: 600px) {
+    // Replaces the plain 80px — clears the fixed cm-nav bottom bar too.
+    padding-bottom: 100px;
+  }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 44px;
+}
+
+.title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2.6rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--accent-light);
+  margin: 0;
+}
+
+.divider {
+  width: 48px;
+  height: 1px;
+  margin: 12px auto;
+  background: linear-gradient(to right, transparent, var(--accent), transparent);
+  opacity: 0.7;
+}
+
+.subtitle {
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0 0 20px;
+}
+
+.install-btn {
+  display: block;
+  margin: 12px auto 0;
+  width: fit-content;
+}
+
+.offline-notice {
+  display: block;
+  margin-bottom: 20px;
+}

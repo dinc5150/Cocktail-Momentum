@@ -1,0 +1,54 @@
+// STYLE_GUIDE §6.7. ≤600px: fixed bottom bar. >600px: inline row, right-aligned in the
+// header beneath the title (positioning relative to the title is the parent's job — see
+// app.scss — this component only lays out its own four items).
+
+:host {
+  display: block; // so .nav's flex justify-content:flex-end spans the header's full width
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+}
+
+@media (max-width: 600px) {
+  :host {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+  }
+
+  .nav {
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    justify-content: space-around;
+    gap: 8px;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (min-width: 601px) {
+  .nav {
+    justify-content: flex-end;
+  }
+}
+
+.nav-item {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding-bottom: 4px;
+  border-bottom: 1px solid transparent; // reserves space so the active underline never shifts layout
+  transition: color var(--dur-color), border-color var(--dur-color);
+
+  // Not 2px — STYLE_GUIDE §5 forbids 2px borders anywhere in the system.
+  &.active {
+    color: var(--accent-light);
+    border-bottom-color: var(--accent);
+  }
+}
