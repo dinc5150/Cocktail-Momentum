@@ -5,4 +5,29 @@
     If that address has an account, a sign-in link is on its way. It expires in 15 minutes
     and can only be used once.
   </p>
+
+  <p class="lede">
+    Installed the app? Mail apps usually open the link in your browser instead of here.
+    Paste it below to sign in to this app directly.
+  </p>
+
+  <form class="form" (submit)="$event.preventDefault(); submit()">
+    <cm-input
+      placeholder="Paste the link from the email"
+      focusStyle="primary"
+      label="Sign-in link"
+      [(value)]="pastedLink"
+    />
+    <cm-button variant="primary" type="submit" [disabled]="submitting()">
+      @if (submitting()) {
+        Signing in…
+      } @else {
+        Use this link
+      }
+    </cm-button>
+  </form>
+
+  @if (error()) {
+    <cm-notice kind="error">{{ error() }}</cm-notice>
+  }
 </cm-card>

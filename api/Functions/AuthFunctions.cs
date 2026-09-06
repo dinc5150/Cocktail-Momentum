@@ -78,22 +78,38 @@ public sealed class AuthFunctions(
         return GenericAccepted;
     }
 
+    // wantsJson lets the installed PWA consume this same endpoint via fetch instead of a
+    // full-page navigation: a magic link opened by a mail app almost never lands in an
+    // installed PWA window (Android/Windows link capturing is unreliable, and an
+    // iOS "Add to Home Screen" app doesn't share cookie storage with Safari at all), so
+    // the app offers a paste-the-link fallback (see CheckEmail) that hits this route with
+    // Accept: application/json and applies the same Set-Cookie itself. A real browser
+    // navigation never sends that Accept value, so the redirect path is untouched.
     [Function("AuthCallback")]
     public async Task<IActionResult> Callback(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "auth/callback")] HttpRequest req,
         CancellationToken ct)
     {
+        var wantsJson = req.Headers.TryGetValue("Accept", out var accept) &&
+            accept.ToString().Contains("application/json", StringComparison.OrdinalIgnoreCase);
+
+        const string invalidMessage = "That link has expired or was already used — request a new one.";
+
         var rawToken = req.Query["token"].ToString();
         if (string.IsNullOrEmpty(rawToken))
         {
-            return new RedirectResult("/welcome?error=link_invalid");
+            return wantsJson
+                ? ApiResults.InvalidRequest(invalidMessage)
+                : new RedirectResult("/welcome?error=link_invalid");
         }
 
         var userId = await tokens.ConsumeMagicLinkAsync(rawToken, ct);
         var user = userId is null ? null : await users.GetByIdAsync(userId, ct);
         if (user is null)
         {
-            return new RedirectResult("/welcome?error=link_invalid");
+            return wantsJson
+                ? ApiResults.InvalidRequest(invalidMessage)
+                : new RedirectResult("/welcome?error=link_invalid");
         }
 
         await users.MarkLoginAsync(user, ct);
@@ -103,7 +119,7 @@ public sealed class AuthFunctions(
         CookieWriter.SetXsrf(req.HttpContext.Response, expiresUtc);
 
         var destination = user.OnboardedUtc is null ? "/onboarding" : "/generate";
-        return new RedirectResult(destination);
+        return wantsJson ? new OkObjectResult(new { destination }) : new RedirectResult(destination);
     }
 
     // No CSRF check here — logout has no consequence worth defending against (worst case

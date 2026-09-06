@@ -4,6 +4,16 @@ import { firstValueFrom } from 'rxjs';
 import { Me } from './models';
 import { skipAuthRedirect } from './auth.interceptor';
 
+/** Accepts either a pasted magic-link URL or a bare token and returns the raw token. */
+function extractMagicLinkToken(pastedLink: string): string {
+  const trimmed = pastedLink.trim();
+  try {
+    return new URL(trimmed).searchParams.get('token') || trimmed;
+  } catch {
+    return trimmed;
+  }
+}
+
 /**
  * The signal store every guard and page reads from. `refresh()` is called once at
  * bootstrap (see app.config.ts's provideAppInitializer) so `loading()` is settled and
@@ -43,6 +53,27 @@ export class AuthStore {
 
   async requestLink(email: string): Promise<void> {
     await firstValueFrom(this.http.post('/api/auth/request-link', { email }));
+  }
+
+  /**
+   * Fallback for installed-PWA users: a magic link opened from a mail app almost never
+   * lands in the installed app window (unreliable OS link capturing, and iOS's
+   * "Add to Home Screen" apps don't share cookie storage with Safari at all), so
+   * CheckEmail lets someone paste the link — or just the token — back into the app.
+   * Hits the same /api/auth/callback the emailed link uses, but with an Accept header
+   * that makes it respond with JSON instead of a redirect. Throws on an invalid/expired/
+   * already-used token.
+   */
+  async consumeMagicLink(pastedLink: string): Promise<string> {
+    const token = extractMagicLinkToken(pastedLink);
+    const { destination } = await firstValueFrom(
+      this.http.get<{ destination: string }>('/api/auth/callback', {
+        params: { token },
+        headers: { Accept: 'application/json' },
+      }),
+    );
+    await this.refresh();
+    return destination;
   }
 
   async logout(): Promise<void> {
