@@ -13,22 +13,21 @@
   margin-bottom: 16px;
 }
 
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.add-row {
+.search-row {
   display: flex;
   align-items: flex-end; // lines the button up with the input box, not its label above it
   gap: 10px;
-  margin-bottom: 20px;
 
   cm-input {
     flex: 1;
     min-width: 0;
   }
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .rows {

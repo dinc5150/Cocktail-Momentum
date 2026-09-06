@@ -8,7 +8,23 @@
 } @else {
   <cm-card label="Pantry">
     <div class="controls">
-      <cm-input type="search" placeholder="Search ingredients…" label="Search ingredients" [(value)]="search" />
+      <div class="search-row">
+        <cm-input
+          type="search"
+          placeholder="Search or add an ingredient…"
+          label="Search or add an ingredient"
+          [(value)]="search"
+        />
+        @if (canAdd()) {
+          <cm-button variant="primary" [disabled]="adding()" (pressed)="addItem()">
+            @if (adding()) {
+              Adding…
+            } @else {
+              Add
+            }
+          </cm-button>
+        }
+      </div>
       <div class="filters">
         <cm-pill [kind]="filter() === 'all' ? 'filter-active' : 'filter'" (pressed)="filter.set('all')">All</cm-pill>
         <cm-pill [kind]="filter() === 'inStock' ? 'filter-active' : 'filter'" (pressed)="filter.set('inStock')">
@@ -21,22 +37,6 @@
           To order
         </cm-pill>
       </div>
-    </div>
-
-    <div class="add-row">
-      <cm-input
-        placeholder="Add an ingredient…"
-        focusStyle="primary"
-        label="New ingredient name"
-        [(value)]="newName"
-      />
-      <cm-button variant="primary" [disabled]="adding() || !newName().trim()" (pressed)="addItem()">
-        @if (adding()) {
-          Adding…
-        } @else {
-          Add
-        }
-      </cm-button>
     </div>
 
     @if (filtered().length === 0) {

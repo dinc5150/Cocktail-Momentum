@@ -24,6 +24,35 @@
   color: var(--text-primary);
 }
 
+// Below 600px there isn't room for pill + name + actions on one line without
+// truncating the name to a few characters, so the name drops to its own
+// full-width row underneath the pill and the action buttons.
+@media (max-width: 600px) {
+  .row {
+    flex-wrap: wrap;
+  }
+
+  cm-pill {
+    order: 1;
+  }
+
+  .actions {
+    order: 2;
+    margin-left: auto;
+  }
+
+  .name,
+  .inline-edit {
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  .name {
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
+}
+
 // Struck through and muted, but the ROW keeps full opacity — a dimmed row would make the
 // toggle harder to see right when a user wants to flip it back. See STYLE_GUIDE §6.4.
 .row.out-of-stock .name {

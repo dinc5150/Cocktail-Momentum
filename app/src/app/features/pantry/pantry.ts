@@ -23,7 +23,6 @@ export class Pantry implements OnInit {
   readonly loading = signal(true);
   readonly search = signal('');
   readonly filter = signal<Filter>('all');
-  readonly newName = signal('');
   readonly adding = signal(false);
   readonly seeding = signal(false);
   readonly seedMessage = signal<string | null>(null);
@@ -43,12 +42,20 @@ export class Pantry implements OnInit {
       .sort((a, b) => compareCategoryOrder(a.category, b.category) || a.name.localeCompare(b.name));
   });
 
+  // No exact (case-insensitive) match means the search text is a candidate to add as a
+  // new ingredient, so the search box doubles as the add box.
+  readonly canAdd = computed(() => {
+    const name = this.search().trim().toLowerCase();
+    if (!name) return false;
+    return !this.pantry.items().some((i) => i.name.trim().toLowerCase() === name);
+  });
+
   readonly emptyMessage = computed(() => {
     if (this.pantry.items().length === 0) {
-      return 'Your pantry is empty. Add an ingredient above.';
+      return 'Your pantry is empty. Type an ingredient name above and add it.';
     }
     if (this.search().trim()) {
-      return `No ingredients match "${this.search().trim()}".`;
+      return `No ingredients match "${this.search().trim()}". Add it as a new ingredient above.`;
     }
     return 'Nothing matches this filter.';
   });
@@ -61,13 +68,13 @@ export class Pantry implements OnInit {
   }
 
   async addItem(): Promise<void> {
-    const name = this.newName().trim();
-    if (!name || this.adding()) return;
+    const name = this.search().trim();
+    if (!name || this.adding() || !this.canAdd()) return;
 
     this.adding.set(true);
     try {
-      await this.pantry.create(name);
-      this.newName.set('');
+      const item = await this.pantry.create(name);
+      await this.pantry.update(item.id, { inStock: true });
     } catch {
       // A 409 (duplicate) is the most likely failure here — pantry.create() doesn't
       // return the existing item on conflict (unlike the API), so there's nothing more
