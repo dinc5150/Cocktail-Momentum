@@ -25,13 +25,17 @@
         <p class="new-link-label">Copy this now — it won't be shown again:</p>
         <div class="url-row">
           <span id="share-url-text" class="url-text">{{ url }}</span>
-          <cm-button variant="secondary" (pressed)="copy()">
-            @if (copied()) {
-              Copied
-            } @else {
-              Copy
-            }
-          </cm-button>
+          @if (canShare) {
+            <cm-button variant="secondary" (pressed)="share()">Share</cm-button>
+          } @else {
+            <cm-button variant="secondary" (pressed)="copy()">
+              @if (copied()) {
+                Copied
+              } @else {
+                Copy
+              }
+            </cm-button>
+          }
         </div>
         <p class="expiry-note">Expires in 12 hours.</p>
       </div>

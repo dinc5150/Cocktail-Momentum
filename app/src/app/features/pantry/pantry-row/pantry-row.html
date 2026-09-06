@@ -24,7 +24,18 @@
       variant="icon"
       [ariaLabel]="item().toOrder ? 'Remove ' + item().name + ' from order list' : 'Add ' + item().name + ' to order list'"
       (pressed)="toggleOrder.emit()"
-    >{{ item().toOrder ? '★' : '☆' }}</cm-button>
+    >
+      <svg class="basket-icon" [class.filled]="item().toOrder" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+        <path d="M8 9V7a4 4 0 0 1 8 0v2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path
+          d="M4 9h16l-1.4 9.8a2 2 0 0 1-2 1.8H7.4a2 2 0 0 1-2-1.8L4 9Z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linejoin="round"
+        ></path>
+      </svg>
+    </cm-button>
     <cm-button variant="icon-danger" ariaLabel="Delete {{ item().name }}" (pressed)="remove.emit()">✕</cm-button>
   </div>
 </div>

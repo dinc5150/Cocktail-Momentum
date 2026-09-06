@@ -20,4 +20,10 @@
     }
     <router-outlet />
   </main>
+
+  @if (auth.isAuthenticated()) {
+    <footer class="footer">
+      <cm-button variant="ghost" (pressed)="logout()">Log out</cm-button>
+    </footer>
+  }
 </div>

@@ -21,6 +21,7 @@ export class Share implements OnInit {
 
   protected readonly shares = inject(ShareStore);
   protected readonly timeUntil = formatTimeUntil;
+  protected readonly canShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function';
 
   async ngOnInit(): Promise<void> {
     await this.shares.load();
@@ -35,6 +36,20 @@ export class Share implements OnInit {
       this.newUrl.set(result.url);
     } finally {
       this.creating.set(false);
+    }
+  }
+
+  async share(): Promise<void> {
+    const url = this.newUrl();
+    if (!url) return;
+
+    try {
+      await navigator.share({ title: 'Cocktail Momentum', text: 'Make cocktails from my bar:', url });
+    } catch (err) {
+      // AbortError is the user dismissing the OS share sheet — not a failure. Anything
+      // else (e.g. no share target registered) falls back to clipboard copy.
+      if (err instanceof Error && err.name === 'AbortError') return;
+      await this.copy();
     }
   }
 

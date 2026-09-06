@@ -78,3 +78,14 @@
   gap: 4px;
   flex-shrink: 0;
 }
+
+// "Add to order list" toggle — outline when not on the list, filled once it is (STYLE_GUIDE
+// §6.4 pattern for a two-state icon toggle, matching the pantry-row star before it).
+.basket-icon {
+  display: block;
+
+  &.filled path:last-of-type {
+    fill: currentColor;
+    fill-opacity: 0.35;
+  }
+}
