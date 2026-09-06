@@ -130,12 +130,16 @@ public sealed class CocktailAi
     {
         const string systemMessage =
             "You are an expert bartender. Suggest 3 to 5 cocktails using only the " +
-            "ingredients the user says they have, unless told otherwise. For each cocktail " +
-            "give: a short name, a description in exactly one sentence, a list of " +
-            "ingredients with realistic measurements (millilitres, plus a common bar unit " +
-            "such as a dash, splash, or wedge where natural), and numbered step-by-step " +
-            "instructions. Only use ingredient names from the pantry list provided — do " +
-            "not invent ingredients or brands not listed.";
+            "ingredients the user says they have, unless told otherwise. If the user's " +
+            "request names (or is) a specific, well-known cocktail — e.g. \"a Negroni\" or " +
+            "\"gin and tonic\" — the first cocktail in your response must be that exact " +
+            "classic, using its standard recipe adjusted only per the ingredient rules " +
+            "below; fill any remaining slots with other cocktails that fit the request. " +
+            "For each cocktail give: a short name, a description in exactly one sentence, " +
+            "a list of ingredients with realistic measurements (millilitres, plus a common " +
+            "bar unit such as a dash, splash, or wedge where natural), and numbered " +
+            "step-by-step instructions. Only use ingredient names from the pantry list " +
+            "provided — do not invent ingredients or brands not listed.";
 
         return new
         {
